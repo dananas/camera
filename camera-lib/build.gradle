@@ -1,0 +1,79 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+apply from: '../versions.gradle'
+
+group 'com.github.dananas'
+version '0.1.0'
+def projectName = 'camera'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
+
+    defaultConfig {
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode versions.versionCode
+        versionName versions.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$versions.androidx.appCompat"
+    implementation "androidx.core:core-ktx:$versions.androidx.coreKtx"
+
+    testImplementation "org.mockito:mockito-core:$versions.test.mockitoCore"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$versions.test.mockitoKotlin"
+    testImplementation "junit:junit:$versions.test.junit"
+}
+
+project.afterEvaluate {
+    publishing {
+        publications {
+            PublishArtifact(MavenPublication) {
+                artifact bundleReleaseAar
+                groupId project.group
+                artifactId projectName
+                version project.version
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    publications = ['PublishArtifact']
+    pkg {
+        repo = 'android'
+        name = projectName
+        userOrg = user
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/dananas/camera-lib.git'
+        version {
+            name = project.version
+        }
+    }
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"

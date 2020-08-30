@@ -1,0 +1,4 @@
+rootProject.name = "Camera"
+
+include ':camera-test'
+include ':camera-lib'
