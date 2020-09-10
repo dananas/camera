@@ -29,7 +29,7 @@ internal class CameraStateMachineTest : BaseTest() {
         doThrow(securityException).`when`(openerMock).openCamera(any(), any(), any())
         stateMachine.start(CAMERA_ID, emptyList())
         verify(openerMock).openCamera(any(), any(), any())
-        verify(loggerMock).error(eq(securityException), any())
+        verify(cameraExceptionHandlerMock).cameraException(eq(securityException))
         assertTrue(stateMachine.state is ClosedState)
     }
 }

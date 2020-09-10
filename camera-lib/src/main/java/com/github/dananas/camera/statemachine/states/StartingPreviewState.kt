@@ -1,11 +1,12 @@
 package com.github.dananas.camera.statemachine.states
 
 import android.hardware.camera2.CameraDevice
-import com.github.dananas.camera.CameraSession
+import android.hardware.camera2.CaptureRequest
 import com.github.dananas.camera.Camera
-import com.github.dananas.camera.utils.exhaustive
+import com.github.dananas.camera.CameraSession
 import com.github.dananas.camera.statemachine.CameraAction
 import com.github.dananas.camera.statemachine.CameraStateMachine
+import com.github.dananas.camera.utils.exhaustive
 
 internal class StartingPreviewState(
     private val machine: CameraStateMachine,
@@ -25,6 +26,7 @@ internal class StartingPreviewState(
     override fun onEnter() {
         val request = camera.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
         if (request != null) {
+            request.set(CaptureRequest.JPEG_ORIENTATION, camera.getJpegOrientation())
             machine.surfaces.forEach { surface ->
                 request.addTarget(surface)
             }

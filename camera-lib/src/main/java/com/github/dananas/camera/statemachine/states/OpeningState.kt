@@ -35,16 +35,17 @@ internal class OpeningState(
     }
 
     override fun onEnter() {
+        val exceptionHandler = machine.exceptionHandler
         try {
             machine.openCamera()
         } catch (e: SecurityException) {
             machine.state = ClosedState(machine)
-            machine.cameraException(e)
+            exceptionHandler.cameraException(e)
         } catch (e: CameraAccessException) {
-            machine.cameraException(e)
+            exceptionHandler.cameraException(e)
             machine.state = OpeningState(machine)
         } catch (e: Exception) {
-            machine.cameraException(e)
+            exceptionHandler.cameraException(e)
             machine.state = OpeningState(machine)
         }
     }

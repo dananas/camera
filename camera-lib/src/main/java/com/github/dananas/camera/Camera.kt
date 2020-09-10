@@ -1,16 +1,18 @@
 package com.github.dananas.camera
 
-import android.hardware.camera2.CameraCaptureSession
-import android.hardware.camera2.CameraDevice
-import android.hardware.camera2.CaptureRequest
+import android.hardware.camera2.*
 import android.os.Handler
 import android.view.Surface
 import androidx.annotation.CheckResult
 import androidx.annotation.WorkerThread
-import com.github.dananas.camera.statemachine.CameraStateMachine
 import java.lang.Exception
 
-internal interface Camera {
+internal interface CameraInfoProvider {
+    fun getSensorOrientation(): Int
+    fun getJpegOrientation(): Int
+}
+
+internal interface Camera : CameraInfoProvider {
     @CheckResult
     fun createCaptureRequest(template: Int): CaptureRequest.Builder?
 
@@ -27,9 +29,10 @@ internal interface Camera {
 
 @WorkerThread
 internal class CameraWrapper(
-    private val machine: CameraStateMachine,
+    cameraInfoProvider: CameraInfoProvider,
+    private val exceptionHandler: CameraExceptionHandler,
     private val camera: CameraDevice
-) : Camera {
+) : Camera, CameraInfoProvider by cameraInfoProvider {
 
     @CheckResult
     override fun createCaptureRequest(template: Int): CaptureRequest.Builder? = invokeSafe {
@@ -54,7 +57,7 @@ internal class CameraWrapper(
         return try {
             block()
         } catch (e: Exception) {
-            machine.cameraException(e)
+            exceptionHandler.cameraException(e)
             null
         }
     }

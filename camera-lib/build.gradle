@@ -6,7 +6,7 @@ apply plugin: 'maven-publish'
 apply from: '../versions.gradle'
 
 group 'com.github.dananas'
-version '0.1.0'
+version '0.2.0'
 def projectName = 'camera'
 
 repositories {
@@ -49,7 +49,7 @@ dependencies {
 project.afterEvaluate {
     publishing {
         publications {
-            PublishArtifact(MavenPublication) {
+            LibArtifact(MavenPublication) {
                 artifact bundleReleaseAar
                 groupId project.group
                 artifactId projectName
@@ -62,13 +62,13 @@ project.afterEvaluate {
 bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
-    publications = ['PublishArtifact']
+    publications = ['LibArtifact']
     pkg {
         repo = 'android'
         name = projectName
         userOrg = user
-        licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/dananas/camera-lib.git'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/dananas/camera.git'
         version {
             name = project.version
         }

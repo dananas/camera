@@ -27,8 +27,14 @@ android {
     }
 }
 
+repositories {
+    maven {
+        url  "https://dl.bintray.com/dananas/android"
+    }
+}
+
 dependencies {
-    implementation project(path: ":camera-lib")
+    implementation "com.github.dananas:camera:0.2.0"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$versions.androidx.appCompat"

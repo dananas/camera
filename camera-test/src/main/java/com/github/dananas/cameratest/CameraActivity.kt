@@ -1,7 +1,5 @@
 package com.github.dananas.cameratest
 
-import android.content.Context
-import android.hardware.camera2.CameraManager
 import android.os.Bundle
 import android.view.SurfaceHolder
 import androidx.appcompat.app.AppCompatActivity
@@ -15,8 +13,7 @@ class CameraActivity : AppCompatActivity(R.layout.camera_activity) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val manager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
-        cameraStarter = CameraStarterFactory.create(manager)
+        cameraStarter = CameraStarterFactory.create(this)
 
         surfaceView.holder.addCallback(object : SurfaceHolder.Callback {
             override fun surfaceCreated(holder: SurfaceHolder) {
@@ -24,7 +21,7 @@ class CameraActivity : AppCompatActivity(R.layout.camera_activity) {
             }
 
             override fun surfaceChanged(
-                holder: SurfaceHolder?,
+                holder: SurfaceHolder,
                 format: Int,
                 width: Int,
                 height: Int

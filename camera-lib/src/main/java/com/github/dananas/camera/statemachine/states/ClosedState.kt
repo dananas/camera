@@ -5,7 +5,9 @@ import com.github.dananas.camera.statemachine.CameraAction
 import com.github.dananas.camera.statemachine.CameraState
 import com.github.dananas.camera.statemachine.CameraStateMachine
 
-internal class ClosedState(private val machine: CameraStateMachine) : CameraState() {
+internal class ClosedState(
+    private val machine: CameraStateMachine
+) : CameraState() {
     override fun onAction(action: CameraAction) {
         when (action) {
             CameraAction.Start -> {

@@ -28,14 +28,26 @@ internal abstract class BaseTest {
     protected lateinit var cameraMock: Camera
 
     @Mock
+    protected lateinit var cameraFactoryMock: CameraFactory
+
+    @Mock
+    protected lateinit var cameraSessionFactoryMock: CameraSessionFactory
+
+    @Mock
+    protected lateinit var cameraExceptionHandlerMock: CameraExceptionHandler
+
+    @Mock
     protected lateinit var cameraSessionMock: CameraSession
 
     @Before
     fun `init state machine`() {
         stateMachine = CameraStateMachine(
             openerMock,
+            cameraFactoryMock,
+            cameraSessionFactoryMock,
             handler,
-            loggerMock
+            loggerMock,
+            cameraExceptionHandlerMock
         )
     }
 }

@@ -8,17 +8,18 @@ import android.os.Handler
 import android.view.Surface
 import androidx.annotation.RequiresPermission
 import androidx.annotation.WorkerThread
-import com.github.dananas.camera.CameraOpener
-import com.github.dananas.camera.CameraSessionWrapper
-import com.github.dananas.camera.CameraWrapper
+import com.github.dananas.camera.*
+import com.github.dananas.camera.CameraFactory
 import com.github.dananas.camera.logger.CameraLogger
 import com.github.dananas.camera.statemachine.states.ClosedState
-import java.lang.Exception
 
 internal class CameraStateMachine(
     private val cameraOpener: CameraOpener,
+    private val cameraFactory: CameraFactory,
+    private val cameraSessionFactory: CameraSessionFactory,
     val handler: Handler,
-    private val logger: CameraLogger
+    private val logger: CameraLogger,
+    val exceptionHandler: CameraExceptionHandler
 ) {
     var surfaces = mutableListOf<Surface>()
     var cameraId: String = "0"
@@ -27,7 +28,7 @@ internal class CameraStateMachine(
         private var camera: CameraDevice? = null
 
         override fun onOpened(camera: CameraDevice) {
-            val safeCamera = CameraWrapper(this@CameraStateMachine, camera)
+            val safeCamera = cameraFactory.createCamera(camera)
             val action = CameraAction.Callback.Opened(safeCamera)
             dispatchAction(action)
             this.camera = camera
@@ -57,8 +58,8 @@ internal class CameraStateMachine(
 
     val sessionListener = object : CameraCaptureSession.StateCallback() {
         override fun onConfigured(session: CameraCaptureSession) {
-            val cameraSession = CameraSessionWrapper(this@CameraStateMachine, session)
-            dispatchAction(CameraAction.Callback.SessionConfigured(cameraSession))
+            val safeSession = cameraSessionFactory.createSession(session)
+            dispatchAction(CameraAction.Callback.SessionConfigured(safeSession))
         }
 
         override fun onConfigureFailed(session: CameraCaptureSession) {
@@ -90,7 +91,7 @@ internal class CameraStateMachine(
             dispatchEnterState(newState)
         }
 
-    var isStarted = false
+    private var isStarted = false
 
     @WorkerThread
     fun start(cameraId: String, surfaces: List<Surface>) {
@@ -116,16 +117,6 @@ internal class CameraStateMachine(
     @WorkerThread
     fun illegalAction(action: CameraAction) {
         logger.warn { "Illegal action:[$action] state:[$state]" }
-    }
-
-    @WorkerThread
-    fun cameraException(e: Exception) {
-        logger.error(e) { "Camera exception" }
-    }
-
-    @WorkerThread
-    fun sessionException(e: Exception) {
-        logger.error(e) { "Session exception" }
     }
 
     @WorkerThread

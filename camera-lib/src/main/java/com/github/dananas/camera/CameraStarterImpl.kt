@@ -8,10 +8,21 @@ import com.github.dananas.camera.statemachine.CameraStateMachine
 
 internal class CameraStarterImpl(
     cameraOpener: CameraOpener,
+    cameraFactory: CameraFactory,
+    cameraSessionFactory: CameraSessionFactory,
     private val cameraHandler: Handler,
-    private val logger: CameraLogger
+    private val logger: CameraLogger,
+    cameraExceptionHandler: CameraExceptionHandler
 ) : CameraStarter {
-    private val stateMachine = CameraStateMachine(cameraOpener, cameraHandler, logger)
+
+    private val stateMachine = CameraStateMachine(
+        cameraOpener,
+        cameraFactory,
+        cameraSessionFactory,
+        cameraHandler,
+        logger,
+        cameraExceptionHandler
+    )
 
     @AnyThread
     override fun start(cameraId: String, surfaces: List<Surface>) {

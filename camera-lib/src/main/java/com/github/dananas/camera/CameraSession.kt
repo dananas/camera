@@ -4,7 +4,6 @@ import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CaptureRequest
 import android.os.Handler
 import androidx.annotation.CheckResult
-import com.github.dananas.camera.statemachine.CameraStateMachine
 import java.lang.Exception
 
 internal interface CameraSession {
@@ -20,7 +19,7 @@ internal interface CameraSession {
 }
 
 internal class CameraSessionWrapper(
-    private val machine: CameraStateMachine,
+    private val exceptionHandler: CameraExceptionHandler,
     private val session: CameraCaptureSession
 ) : CameraSession {
     override fun setRepeatingBurst(
@@ -39,7 +38,7 @@ internal class CameraSessionWrapper(
         return try {
             block()
         } catch (e: Exception) {
-            machine.sessionException(e)
+            exceptionHandler.sessionException(e)
             null
         }
     }
