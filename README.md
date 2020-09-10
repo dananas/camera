@@ -2,6 +2,8 @@
 Android library for easy camera preview rendering.
 You don't need to worry about camera errors because library does it for you.
 
+[ ![Download](https://api.bintray.com/packages/dananas/android/camera/images/download.svg) ](https://bintray.com/dananas/android/camera/_latestVersion)
+
 ## How to use it
 ### Import with gradle:
 ```groovy
@@ -17,8 +19,7 @@ dependencies {
 ```
 ### Create instance of CameraStarter through CameraStarterFactory
 ```kotlin
-val manager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
-val cameraStarter = CameraStarterFactory.create(manager)
+val cameraStarter = CameraStarterFactory.create(context = this)
 ```
 
 ### Start and stop camera when needed
