@@ -7,4 +7,5 @@ import androidx.annotation.AnyThread
 interface CameraStarter {
     fun start(cameraId: String, surfaces: List<Surface>)
     fun stop()
+    fun release()
 }

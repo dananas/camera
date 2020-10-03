@@ -6,7 +6,7 @@ apply plugin: 'maven-publish'
 apply from: '../versions.gradle'
 
 group 'com.github.dananas'
-version '0.2.0'
+version '0.3.0'
 def projectName = 'camera'
 
 repositories {

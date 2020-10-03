@@ -14,13 +14,12 @@ object CameraStarterFactory {
     @AnyThread
     fun create(
         context: Context,
-        handler: Handler? = null,
         logger: CameraLogger? = null,
         exceptionHandler: CameraExceptionHandler? = null
     ): CameraStarter {
         val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val cameraHandler = handler ?: run {
+        val cameraHandler = run {
             val handlerThread = HandlerThread("camera-thread")
             handlerThread.start()
             Handler(handlerThread.looper)
