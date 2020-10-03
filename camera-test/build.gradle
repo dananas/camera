@@ -31,10 +31,11 @@ repositories {
     maven {
         url  "https://dl.bintray.com/dananas/android"
     }
+    mavenLocal()
 }
 
 dependencies {
-    implementation "com.github.dananas:camera:0.2.0"
+    implementation "com.github.dananas:camera:0.4.0"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$versions.androidx.appCompat"
