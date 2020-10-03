@@ -5,9 +5,9 @@ import android.view.SurfaceHolder
 import androidx.appcompat.app.AppCompatActivity
 import com.github.dananas.camera.CameraStarter
 import com.github.dananas.camera.CameraStarterFactory
-import kotlinx.android.synthetic.main.camera_activity.*
+import kotlinx.android.synthetic.main.camera_starter_activity.*
 
-class CameraActivity : AppCompatActivity(R.layout.camera_activity) {
+class CameraActivity : AppCompatActivity(R.layout.camera_starter_activity) {
     private var cameraStarter: CameraStarter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,5 +44,10 @@ class CameraActivity : AppCompatActivity(R.layout.camera_activity) {
     override fun onResume() {
         super.onResume()
         cameraStarter?.stop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cameraStarter?.release()
     }
 }
