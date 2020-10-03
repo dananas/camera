@@ -44,6 +44,9 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$versions.test.mockitoCore"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$versions.test.mockitoKotlin"
     testImplementation "junit:junit:$versions.test.junit"
+
+    androidTestImplementation "androidx.test.ext:junit:$versions.test.extJunit"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.test.espressoCore"
 }
 
 project.afterEvaluate {
