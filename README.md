@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.github.dananas:camera:0.2.0"
+    implementation "com.github.dananas:camera:0.3.0"
 }
 ```
 ### Create instance of CameraStarter through CameraStarterFactory
