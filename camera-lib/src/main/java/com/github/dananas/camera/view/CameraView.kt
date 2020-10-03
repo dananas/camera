@@ -13,10 +13,10 @@ import com.github.dananas.camera.R
  */
 class CameraView(context: Context, attrs: AttributeSet) : SurfaceView(context, attrs) {
     private var cameraStarter: CameraStarter? = null
+    val cameraId: String
 
     init {
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.CameraView)
-        val cameraId: String
         try {
             cameraId = attributes.getInt(R.styleable.CameraView_cameraId, DEFAULT_CAMERA_ID).toString()
         } finally {
@@ -38,6 +38,7 @@ class CameraView(context: Context, attrs: AttributeSet) : SurfaceView(context, a
 
             override fun surfaceDestroyed(holder: SurfaceHolder) {
                 cameraStarter?.release()
+                cameraStarter = null
             }
         })
     }
